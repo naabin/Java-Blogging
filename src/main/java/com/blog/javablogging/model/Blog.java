@@ -1,6 +1,7 @@
 package com.blog.javablogging.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -23,10 +24,16 @@ public class Blog {
     private String content;
 
     @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXX")
     private OffsetDateTime createdDate;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Tag> tags = new HashSet<>();
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
     public Integer getId() {
