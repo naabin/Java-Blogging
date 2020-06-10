@@ -21,7 +21,6 @@ public class PasswordEncrypt {
 
     }
 
-    @Bean
     public static String randomPassword(){
         String saltChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder salt = new StringBuilder();
