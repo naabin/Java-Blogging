@@ -1,1 +1,24 @@
 language: java
+deploy:
+- provider: s3
+  access_key_id: AKIARL7RCF5MU7R6LCOK
+  secret_access_key: &1
+    secure: FPefzSNVhr9cJCuG2ybyjGvz6bwVOnYE405S6PnIOhbehrLE+JpxBL6Gm9wQdKPArlim/5EDffSNskf4FO17Imp1zFokSXT06GM1pW8x7t4SqImJ8DQ+0iaWQXxPnmJdreVAbhcPceJWthAKLlD9UNiI1dq3Avhskj8jJYQXAmNof5pUAaagm/J5TcnAFMFqJECu5ZShHk41tAN8bGd954SCElc8FmZmdD8olNCQHEki33GPh6B/JGIoNxI+f6G/2hpm4irRZ0FdNA1OfYhzO3mjmU1RoTswIAeXnhsQ507HPnC/9oMCddzSQtgo49J0ou2eipidetOzeVhqTccedby6CYi/rAbB5iI3PwRzqmYTTFC+lflOEKkrQzjPP1ie253WruKUTBe4yFi7pJSl/3FOSRORF3mriZM9bPYgDoJYwqO2CUXzlqm6QuT2l4Mr7N1+CtRIjy4x8gqLnB6zahSittta1zCp5j3fUISZrI5uxwPvbBZ+djOiTGalH4BpRBSXzpHGyjJaGOCZAjk0qC+xAnx3qc0PmfR/Hp7FsGP4ed5SJ2yz52DFzuhto6XYFsn6MKlvfsVyDVT6bJWpCt1bidJnaQD3Ks1hIDjj3GIaeX9li4Ilf7N/fN7VvQMRVfSng6wC9cifHNivdzpvY4bFocwWnzu/Tt2QA4lwlHU=
+  local_dir: dpl_cd_upload
+  skip_cleanup: true
+  on: &2
+    repo: naabin/Java-Blogging
+  bucket: java-blogging-bucket
+- provider: codedeploy
+  access_key_id: AKIARL7RCF5MU7R6LCOK
+  secret_access_key: *1
+  bucket: java-blogging-bucket
+  key: ''
+  bundle_type: zip
+  application: Java-Blogging
+  deployment_group: ''
+  on: *2
+  skip_cleanup: 'true'
+before_deploy:
+- mkdir -p dpl_cd_upload
+- mv '' dpl_cd_upload/''
