@@ -16,7 +16,7 @@ deploy:
   key: latest.zip
   bundle_type: zip
   application: Java-Blogging
-  deployment_group: ''
+  deployment_group: JavaBlogProduction
   on: *2
   skip_cleanup: 'true'
 before_deploy:
