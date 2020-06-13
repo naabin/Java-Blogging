@@ -11,3 +11,5 @@ deploy:
   on:
     repo: naabin/Java-Blogging
   skip_cleanup: 'true'
+before_deploy:
+  - mvn package
