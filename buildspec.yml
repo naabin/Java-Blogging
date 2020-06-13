@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo installing maven
+  build:
+    commands:
+      - echo building blogs
+      - pwd
+      - mvn install
+      - mvn package
+artifacts:
+  files:
+    - target/*.jar
+    - scripts/*.sh
+    - appspec.yml
+  discard-paths: yes
+
+cache:
+  paths:
+    - '/root/.m2/**/*'
