@@ -15,6 +15,7 @@ deploy:
   bucket: java-bloggin-bucket
   key: latest.zip
   bundle_type: zip
+  region: ap-southeast-2
   application: Java-Blogging
   deployment_group: JavaBlogProduction
   on: *2
