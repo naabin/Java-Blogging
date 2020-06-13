@@ -1,26 +1,13 @@
 language: java
 deploy:
-- provider: s3
+  provider: elasticbeanstalk
   access_key_id: AKIARL7RCF5MU7R6LCOK
-  secret_access_key: &1
-    secure: gs1uLJgLlqaLVYKiwRByR2nGxN4ZAjcUTk/rG0VTIUSFV8y1qWmxMvK1kgxEEV9jYG+wawi+cs+F7q4Lapvj64WmWkQiSSl90oHqnkqGz9qlFc1LtnSTjEWMjh0VBQFO3c9jQzRzPa2Yot9saTks2CJaLg+IJsrBZIWGuYwd/+Zc6nzdKE3VZsA8qsaaCKj/bGBdaa2JwJo/MeXAuyg1EXtwGdbwkEDLbG3DA0PQyG6aw80RMgtk0aCjtA3dYSoNnZrYdPvNsTKtCKdRVa6MrmNQmXcqeofC+T8I2rGKBxuSTl74ch+nFBTH0WBAtCHCEa2FF6cjbv+WS8Wz6+ZZvQoMh2gM56GAhJbnS6RA4Ozk0YKGVq+WsyP7h3MYWWSgPl5PfLyKQ736Q1U8TeH1zPypqnHqoU3dNqVnvMF+jmMeeIrpgW8NDbUPi73QTWdYxirF8HyAuAAz2YpT5xqgY6xu9ptO+joBsPULqkKqFkHq8K9hTz9Un8/ynOPgagNZO47731GjCwF4RgLREZy7YkW6TfzLYOY21v6ZSPOaocunBDva38CiG3kS4jxC6kGTkAMt+1HiKbIrVNig9/hGwxPL8xzT8PbAwO+fTtW1CuXZeSg4MiF26W8SCpxFctGxiJ9RfTp9LA3PPh5v9A+L2LdwIlCQlhiY6y2VsSRCin8=
-  local_dir: dpl_cd_upload
-  skip_cleanup: true
-  on: &2
-    repo: naabin/Java-Blogging
-  bucket: java-bloggin-bucket
-- provider: codedeploy
-  access_key_id: AKIARL7RCF5MU7R6LCOK
-  secret_access_key: *1
-  bucket: java-bloggin-bucket
-  key: latest.zip
-  bundle_type: zip
+  secret_access_key:
+    secure: s6PYCQy99VjOwNYn13ehBB7QS/IcpXVaDoQ97L/Toi7u/bZ/eNNGdKDGMacShaO17dsFCDKZTioxKuOKPkFPBg127D7fChkr8tsG4NdQ+7kx0MNwcuPJ86paPdT5vHHam8RxIqlLEs3qse9uKHboH6oTsKBF8JQir/qL7cdatExlLWY0fKc5NYrwBtAOpHcznMR2unMlsd9Zz1VRY01G/mZ/A6Mar3vVDGKbzZwfaeUuAn6pYCqihW550inbl3YPg6N66lwIKY3bX9pdBhloPEVMGw/fU2gKedCOnFOvnq4zvfzqG+jjsCKdcqCafMy0UBXQJV/7aZORfym8Zm9u/PTJsiTW1VW7Sq/nTCWffSrV7PCquR/8yLf307d3VcIYvjfmJwCaTyTEiUT2FPm41+cRJoHzb1CmVvbBd1VYbGGTwlVBJxV2lG+kSHUc3dF08CjKRHA1iSelJw+GkXXzfHD+3ihhb8351WeyfP5BAfHS+sppH2F/1dZaou/Np+vFEVytwxFnVb+kiBiGd6cJqoDDGoF2GWMTsQseJFU9lj6bAGeDN/mQ8LOkOXNdvhMOn0j1m9ZBUHAI7AmJ8SxFLneUGmcsk/P1A53edjf9otknhLIQAlYx3j02narCn8Wqo1g6p36sEnBLZOF/13FCQ5UslOtRcB2ft7jkoD1Qr8M=
   region: ap-southeast-2
-  application: Java-Blogging
-  deployment_group: JavaBlogProduction
-  on: *2
+  app: Java-Blogging
+  env: JavaBlogging-env
+  bucket_name: java-bloggin-bucket
+  on:
+    repo: naabin/Java-Blogging
   skip_cleanup: 'true'
-before_deploy:
-- zip -r latest *
-- mkdir -p dpl_cd_upload
-- mv latest.zip dpl_cd_upload/latest.zip
