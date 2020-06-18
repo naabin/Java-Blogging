@@ -61,12 +61,12 @@ public class UserServiceImpl implements UserService {
     public User create(User user) {
         User newUser = this.userRepository.findByEmail(user.getEmail());
         if (newUser != null){
-            LOG.info("User " + user.getName() + " already exists");
+            LOG.info("User " + user.getEmail() + " already exists");
         } else {
             user.setPassword(this.passwordEncrypt.passwordEncoder().encode(user.getPassword()));
             return userRepository.save(user);
         }
-        return newUser;
+        return null;
     }
 
     //TODO: to be implemented later

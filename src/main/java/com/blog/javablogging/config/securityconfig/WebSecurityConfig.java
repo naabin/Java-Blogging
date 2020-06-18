@@ -6,6 +6,7 @@ import com.blog.javablogging.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncrypt passwordEncrypt;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
+    @Autowired
     public WebSecurityConfig(JwtRequestFilter requestFilter,
                              PasswordEncrypt passwordEncrypt,
                              JwtAuthenticationEntryPoint authenticationEntryPoint,
@@ -47,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return this.passwordEncrypt.passwordEncoder();
     }
 
+    @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
@@ -67,6 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     .antMatchers("/api/auth/**")
+                    .permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/blog/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated();
