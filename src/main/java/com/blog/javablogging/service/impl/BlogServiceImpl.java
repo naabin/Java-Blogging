@@ -34,6 +34,12 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public Page<Blog> getPublishedBlogByPage(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return this.blogRepository.getAllByPublished(true, pageable);
+    }
+
+    @Override
     public Blog create(Blog blog) {
         for (Tag tag: blog.getTags()){
             this.tagRepository.save(tag);
@@ -53,6 +59,9 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Blog update(Blog blog) {
+        for (Tag tag: blog.getTags()){
+            this.tagRepository.saveAndFlush(tag);
+        }
         return this.blogRepository.saveAndFlush(blog);
     }
 

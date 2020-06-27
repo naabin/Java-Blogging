@@ -5,4 +5,6 @@ import org.springframework.data.domain.Page;
 
 public interface BlogService extends GeneralService<Blog> {
     Page<Blog> getBlogByPage(Integer pageNumber, Integer pageSize);
+
+    Page<Blog> getPublishedBlogByPage(Integer pageNumber, Integer pageSize);
 }

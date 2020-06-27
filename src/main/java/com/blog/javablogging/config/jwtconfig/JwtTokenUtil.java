@@ -1,6 +1,7 @@
 package com.blog.javablogging.config.jwtconfig;
 import com.blog.javablogging.model.security.oauth.UserPrincipal;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +39,24 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
+    public String refreshToken(String token) throws Exception {
+        boolean validateToken = validateToken(token);
+        if (validateToken){
+            Claims allClaimsFromToken = getAllClaimsFromToken(token);
+            if (allClaimsFromToken.isEmpty()){
+                throw new Exception("Invalid token claims");
+            }
+            allClaimsFromToken.setIssuedAt(new Date());
+            allClaimsFromToken.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000));
+            return Jwts
+                    .builder()
+                    .setClaims(allClaimsFromToken)
+                    .signWith(SignatureAlgorithm.HS512, secret)
+                    .compact();
+        }
+        throw new Exception("Invalid token claims");
+    }
+
     //Check if the token has expired
     public Boolean isTokenExpired(String token){
         final Date expiration = getExpirationDateFromToken(token);
@@ -69,5 +88,16 @@ public class JwtTokenUtil implements Serializable {
     public boolean validateToken(String token, UserDetails userDetails){
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private boolean validateToken(String token) throws Exception {
+        try {
+            Jwts
+                    .parser().setSigningKey(this.secret)
+                    .parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e){
+            throw new Exception("Expired or invalid Jwt Token");
+        }
     }
 }

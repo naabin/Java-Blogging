@@ -6,6 +6,7 @@ import com.blog.javablogging.dto.SignupRequest;
 import com.blog.javablogging.model.User;
 import com.blog.javablogging.model.security.oauth.AuthProvider;
 import com.blog.javablogging.service.UserService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,10 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
@@ -42,14 +40,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequest request) throws Exception {
-        UserDetails userDetails = this.userService.loadUserByUsername(request.getEmail());
-        if (userDetails == null){
+        User user = this.userService.loadUserByEmail(request.getEmail());
+        if (user == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid credentials");
         }
         Authentication authentication = authenticate(request.getEmail(), request.getPassword());
 
         String token = this.tokenUtil.generateToken(authentication);
-        return ResponseEntity.ok().header("token", token).build();
+        return ResponseEntity.ok().header("token", token).body(user);
     }
 
     @PostMapping("/signup")
@@ -77,6 +75,13 @@ public class AuthController {
         }
         return ResponseEntity.ok().body(newUser);
     }
+
+    @GetMapping("/refreshToken")
+    public ResponseEntity<?> getRefreshToken(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String bearerToken) throws Exception {
+        String s = this.tokenUtil.refreshToken(bearerToken.substring(7));
+        return ResponseEntity.ok().header("token", s).build();
+    }
+
 
     private Authentication authenticate(String email, String password) throws Exception {
         try{

@@ -5,6 +5,7 @@ import com.blog.javablogging.model.Blog;
 import com.blog.javablogging.model.User;
 import com.blog.javablogging.service.BlogService;
 import com.blog.javablogging.service.UserService;
+import com.sun.mail.iap.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,15 @@ public class BlogController {
         return ResponseEntity.ok().body(blogByPage);
     }
 
+    @GetMapping("/published")
+    public ResponseEntity<Page<Blog>> getPublishedBlog(
+            @RequestParam(value = "pageNumber", required = false, defaultValue = "0") Integer pageNumber,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize
+    ) {
+        Page<Blog> blogPage = this.blogService.getPublishedBlogByPage(pageNumber, pageSize);
+        return ResponseEntity.ok().body(blogPage);
+    }
+
     @PostMapping
     public ResponseEntity<?> createBlog(
             @RequestParam(value = "userId", required = true)Integer userId,
@@ -54,11 +64,11 @@ public class BlogController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBlog(@PathVariable("id") Integer id, @RequestBody @Valid Blog blog) throws ResourceNotFoundException {
+    public ResponseEntity<?> updateBlog(@PathVariable("id") Integer id, @RequestBody Blog blog) throws ResourceNotFoundException {
         Blog updatingBlog = this.blogService.getById(id).orElseThrow(() -> new ResourceNotFoundException("Could not locate the resource."));
         updatingBlog.setContent(blog.getContent());
-        updatingBlog.setTags(blog.getTags());
         updatingBlog.setTitle(blog.getTitle());
+        updatingBlog.setPublish(blog.isPublished());
         Blog updatedBlog = this.blogService.update(updatingBlog);
         return ResponseEntity.ok().body(updatedBlog);
     }

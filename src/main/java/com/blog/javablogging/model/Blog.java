@@ -30,6 +30,9 @@ public class Blog {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Tag> tags = new HashSet<>();
 
+    @Column
+    private Boolean published = false;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -82,5 +85,13 @@ public class Blog {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublish(boolean publish) {
+        this.published = publish;
     }
 }

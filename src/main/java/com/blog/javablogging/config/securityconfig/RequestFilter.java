@@ -27,6 +27,7 @@ public class RequestFilter implements Filter {
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         res.setHeader("Access-Control-Allow-Headers", "x-requested-with, x-auth-token");
+        res.setHeader("Access-Control-Expose-Headers", "token");
         res.setHeader("Access-Control-Max-Age", "3600");
         res.setHeader("Access-Control-Allow-Credentials", "true");
 
@@ -42,7 +43,8 @@ public class RequestFilter implements Filter {
             res.setHeader("Access-Control-Allowed-Methods", "POST, PUT, GET, DELETE");
             res.setHeader("Access-Control-Max-Age", "3600");
             res.setHeader("Access-Control-Allow-Headers", "authorization, content-type, X-Auth-Token, "
-                    + "access-control-request-headers, access-control-request-method, accept, origin, x-requested-with");
+                    + "access-control-request-headers, access-control-request-method, accept, origin, x-requested-with," +
+                    " access-control-expose-headers");
 
             res.setStatus(HttpServletResponse.SC_OK);
         }
