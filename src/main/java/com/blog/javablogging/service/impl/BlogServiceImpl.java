@@ -59,9 +59,6 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public Blog update(Blog blog) {
-        for (Tag tag: blog.getTags()){
-            this.tagRepository.saveAndFlush(tag);
-        }
         return this.blogRepository.saveAndFlush(blog);
     }
 

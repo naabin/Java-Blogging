@@ -17,7 +17,7 @@ public class Tag {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "tags", cascade = CascadeType.DETACH)
+    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
     private List<Blog> blogs = new ArrayList<>();
 
 

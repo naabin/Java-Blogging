@@ -68,6 +68,7 @@ public class BlogController {
         Blog updatingBlog = this.blogService.getById(id).orElseThrow(() -> new ResourceNotFoundException("Could not locate the resource."));
         updatingBlog.setContent(blog.getContent());
         updatingBlog.setTitle(blog.getTitle());
+        updatingBlog.setTags(blog.getTags());
         updatingBlog.setPublish(blog.isPublished());
         Blog updatedBlog = this.blogService.update(updatingBlog);
         return ResponseEntity.ok().body(updatedBlog);
