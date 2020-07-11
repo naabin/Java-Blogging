@@ -40,6 +40,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public Optional<Blog> getBlogByTitle(String title) {
+        return this.blogRepository.getBlogByTitle(title);
+    }
+
+    @Override
     public Blog create(Blog blog) {
         for (Tag tag: blog.getTags()){
             this.tagRepository.save(tag);

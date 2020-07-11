@@ -63,6 +63,12 @@ public class BlogController {
         return ResponseEntity.ok().body(blog);
     }
 
+    @GetMapping("/name")
+    public ResponseEntity<Blog> getBlogByTitle(@RequestParam(value = "title", required = true)String title) throws ResourceNotFoundException {
+        Blog blog = this.blogService.getBlogByTitle(title).orElseThrow(() -> new ResourceNotFoundException("Resource could not be located"));
+        return ResponseEntity.ok().body(blog);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBlog(@PathVariable("id") Integer id, @RequestBody Blog blog) throws ResourceNotFoundException {
         Blog updatingBlog = this.blogService.getById(id).orElseThrow(() -> new ResourceNotFoundException("Could not locate the resource."));

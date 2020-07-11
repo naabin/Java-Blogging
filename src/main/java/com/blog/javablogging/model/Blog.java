@@ -33,6 +33,9 @@ public class Blog {
     @Column
     private Boolean published = false;
 
+    @OneToOne
+    private Image image;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -93,5 +96,21 @@ public class Blog {
 
     public void setPublish(boolean publish) {
         this.published = publish;
+    }
+
+    public Boolean getPublished() {
+        return published;
+    }
+
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }
